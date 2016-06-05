@@ -3,6 +3,8 @@ package analisadorSintatico;
 scan with {: return lexer.next_token(); :};
 
 
+
+
 terminal SOMA, SUBTRACAO, MULTIPLICACAO, DIVISAO, RESTO, NEGACAO, E, OU, IGUAL, DIFERENTE, MENOR, MENORIGUAL, MAIOR, MAIORIGUAL,
 		 PONTOVIRGULA, PONTO, VIRGULA, ABREPAR, FECHAPAR, ABRECHAVES, FECHACHAVES, ABRECOL, FECHACOL, ATRIBUI,
 		 PUBLIC, CLASS, EXTENDS, STATIC, VOID, BOOLEAN, MAIN, STRING, INT, WHILE, IF, ELSE, RETURN, LENGTH, THIS, NEW, SYSTEMOUTPRINTLN;
@@ -11,6 +13,90 @@ terminal Boolean TRUE, FALSE;
 terminal Integer NUMERO;
 terminal String IDENTIFICADOR;
 
-non terminal Programa prog; 
 
-prog		::=	SOMA;
+non terminal goal;
+non terminal mainClass;
+non terminal classList;
+non terminal classDeclaration;
+non terminal extendClass;
+non terminal varDeclaration;
+non terminal varList;
+non terminal methodDeclaration;
+non terminal methodList;
+non terminal parameter;
+non terminal parameterList;
+non terminal parameterCommaList;
+non terminal type;
+non terminal statement;
+non terminal statementList;
+non terminal expression;
+non terminal identifier;
+non terminal argument;
+non terminal argumentList;
+non terminal argumentCommaList;
+
+
+
+goal	::= mainClass classList;
+
+mainClass	::= CLASS identifier ABRECHAVES PUBLIC STATIC VOID MAIN STRING ABRECOL FECHACOL identifier FECHAPAR ABRECHAVES statemnet FECHACHAVES FECHACHAVES;
+
+classList	::= classDeclaration classList | ;
+
+classDeclaration	::= CLASS identifier extendClass ABRECHAVES varList methodList FECHACHAVES;
+
+varDeclaration	::= type identifier PONTOVIRGULA;	
+
+extendsClass	::=	EXTENDS identifier | ;
+
+methodDeclaration	::= PUBLIC type identifier ABREPAR argumentList FECHAPAR ABRECHAVES varList statementList RETURN expression PONTOVIRGULA FECHACHAVES
+
+argumentList ::= argument argumentCommaList | ;
+
+argumentCommaList ::= COMMA argument argumentCommaList | ;
+
+type	::= INT ABRECOL FECHACOL | BOOLEAN | INT | identifier
+		
+statement	::= ABRECHAVES statementList FECHACHAVES |  IF ABREPAR expression FECHAPAR statement ELSE statement
+				| WHILE ABREPAR expression FECHAPAR statement | SYSTEMOUTPRINTLN ABREPAR expression FECHAPAR PONTOVIRGULA | identifier ATRIBUI expression PONTOVIRGULA | identifier ABRECOL expression FECHACOL ATRIBUI expression PONTOVIRGULA
+
+expression	::= expression E MENOR SOMA SUBTRACAO MULTIPLICACAO expression | expression ABRECOL expression FECHACOL | expression PONTO LENGTH 
+				| expression PONTO identifier ABREPAR parameterList FECHAPAR | NUMERO | TRUE | FALSE | identifier | THIS | FALSE | identifier | THIS | NEW INT ABRECOL expression FECHACOL | NEW identifier AVREPAR FECHAPAR | NEGACAO expression | ABREPAR expression FECHAPAR
+				
+				
+parameterList	::= parameter parameterCommaList | ;
+
+ParameterCommaList	::= COMMA parameter parameterCommaList | ;
+
+identifier	::= IDENTIFICADOR
+
+expression	::= expression OU expression
+				| expression E expression
+				| expression IGUAL expression
+				| expression DIFERENTE expression
+				| expression MENOR expression
+				| expression MENORIGUAL expression
+				| expression MAIOR expression
+				| expression MAIORIGUAL expression
+				| expression SOMA expression
+				| expression SUBTRACAO expression
+				| expression MULTIPLICACAO expression
+				| expression DIVISAO expression
+				| expression RESTO expression
+				| NEGACAO expression
+				| expression ABRECOL expression FECHACOL
+				| expression PONTO LENGTH
+				| expression PONTO identifieR ABREPAR parameterList FECHAPAR
+				| NUMERO
+				| FALSE
+				| TRUE
+				| identifier
+				| THIS
+				| NEW INT ABRECOL expression FECHACOL
+				| NEW identifier ABREPAR FECHAPAR
+				| ABREPAR expression FECHAPAR			
+				| expression NUMERO;
+				
+				
+
+
