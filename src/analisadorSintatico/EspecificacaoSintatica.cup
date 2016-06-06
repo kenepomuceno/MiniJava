@@ -1,5 +1,55 @@
 package analisadorSintatico;
 
+import java_cup.runtime.*;
+import miniJava.ast.declaration.classDecl.ClassDecl;
+import miniJava.ast.declaration.classDecl.ExtendedClassDecl;
+import miniJava.ast.declaration.classDecl.SimpleClassDecl;
+import miniJava.ast.declaration.classDecl.list.ClassDeclList;
+import miniJava.ast.declaration.classDecl.main.MainClassDecl;
+import miniJava.ast.declaration.methodDecl.Argument;
+import miniJava.ast.declaration.methodDecl.MethodDecl;
+import miniJava.ast.declaration.methodDecl.list.ArgumentList;
+import miniJava.ast.declaration.methodDecl.list.MethodDeclList;
+import miniJava.ast.declaration.varDecl.VarDecl;
+import miniJava.ast.declaration.varDecl.list.VarDeclList;
+import miniJava.ast.expression.Expression;
+import miniJava.ast.expression.MethodCallExpr;
+import miniJava.ast.expression.ThisExpr;
+import miniJava.ast.expression.array.ArrayLengthExpr;
+import miniJava.ast.expression.array.ArrayLookupExpr;
+import miniJava.ast.expression.array.NewArrayExpr;
+import miniJava.ast.expression.bool.BinaryBooleanExpr;
+import miniJava.ast.expression.bool.BooleanLiteralExpr;
+import miniJava.ast.expression.bool.UnaryBooleanExpr;
+import miniJava.ast.expression.identifier.IdentifierExpr;
+import miniJava.ast.expression.identifier.NewObjectExpr;
+import miniJava.ast.expression.integer.BinaryIntegerExpr;
+import miniJava.ast.expression.integer.IntegerLiteralExpr;
+import miniJava.ast.expression.list.ExpressionList;
+import miniJava.ast.identifier.Identifier;
+import miniJava.ast.program.Program;
+import miniJava.ast.statement.*;
+import miniJava.ast.statement.list.StatementList;
+import miniJava.ast.type.*;
+
+parser code {:
+
+	private AnalisadorLexico analisadorLexico;
+	
+    	public AnalisadorSintatico(File file) throws IOException {
+
+        this.file = file;
+
+        ComplexSymbolFactory symbolFactory = new ComplexSymbolFactory();
+
+        super.symbolFactory = symbolFactory;
+
+        this.lexer = new Lexer(file, symbolFactory);
+    }
+:}
+
+
+
 scan with {: return lexer.next_token(); :};
 
 
